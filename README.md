@@ -1,6 +1,6 @@
 # wavie
 
-A new Flutter project.
+Project of the 8th semester.
 
 ## Getting Started
 
