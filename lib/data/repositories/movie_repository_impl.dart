@@ -15,9 +15,32 @@ class MovieRepositoryImpl extends MovieRepository {
     // TODO: implement getTrending
     try {
       final movies = await remoteDataSource.getTrending();
-      //print(movies[0].title);
+      print(movies);
       return movies;
-    } catch (e) {}
-    throw List<MovieEntity>;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  @override
+  Future<List<MovieEntity>> getTop10() async {
+    // TODO: implement getTop10
+    try {
+      final movies = await remoteDataSource.getTop10();
+      return movies;
+    } catch (e) {
+      throw List<MovieEntity>;
+    }
+  }
+
+  @override
+  Future<List<MovieEntity>> getPopular() async {
+    // TODO: implement getPopular
+    try {
+      final movies = await remoteDataSource.getPopular();
+      return movies;
+    } catch (e) {
+      throw List<MovieEntity>;
+    }
   }
 }

@@ -6,4 +6,5 @@ class ApiConstants {
       "http://192.168.1.167:8080/wavie-backend/public";
 
   static const String GET10 = "/api/get10";
+  static const String GETPOPULAR = "/api/popular";
 }

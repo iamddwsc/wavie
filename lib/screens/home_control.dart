@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wavie/presentation/tab_navigator.dart';
-import '../utils/appcolors.dart' as appcolors;
+import '../common/appcolors.dart' as appcolors;
 
 class HomeControl extends StatefulWidget {
   const HomeControl({Key? key}) : super(key: key);

@@ -6,7 +6,9 @@ import 'package:wavie/presentation/journeys/home/custom_appbar/custom_appbar.dar
 import 'package:wavie/presentation/journeys/home/movie_carousel/movie_carousel_header.dart';
 import 'package:wavie/presentation/journeys/home/movie_carousel/movie_carousel_widget.dart';
 import 'package:wavie/presentation/journeys/home/movie_category/movie_category_widget.dart';
-import 'package:wavie/utils/appcolors.dart' as appcolors;
+import 'package:wavie/common/appcolors.dart' as appcolors;
+import 'package:wavie/presentation/journeys/menu/menu_widget.dart';
+import 'package:wavie/presentation/utils/custom_page_route.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -48,6 +50,7 @@ class _HomePageState extends State<HomePage> {
           SliverAppBar(
             //expandedHeight: 100.0,
             //foregroundColor: Colors.transparent,
+            //collapsedHeight: 30.0,
             backgroundColor: Colors.black.withOpacity(1),
             shadowColor: Colors.black.withOpacity(0.1),
             floating: true,
@@ -73,18 +76,25 @@ class _HomePageState extends State<HomePage> {
                             'assets/images/logo_w.png',
                           ))),
                 ),
-                Container(
-                  //margin: EdgeInsets.only(right: 20.0), width: 32.0,
-                  height: 32.0,
-                  child: Icon(
-                    Icons.circle_notifications,
-                    color: Colors.white,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).push(
+                        CustomPageRoute(
+                            child: MenuWidget(), direction: AxisDirection.up));
+                  },
+                  child: Container(
+                    //margin: EdgeInsets.only(right: 20.0), width: 32.0,
+                    height: 32.0,
+                    child: Image.asset(
+                      'assets/images/avatar.png',
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 )
               ],
             ),
             bottom: PreferredSize(
-              preferredSize: Size(screenSize.width, 20.0),
+              preferredSize: Size(screenSize.width, 25.0),
               child: Container(
                 margin: EdgeInsets.only(left: 60, right: 60, bottom: 5.0),
                 child: Row(
@@ -104,12 +114,16 @@ class _HomePageState extends State<HomePage> {
           )
         ],
         body: SingleChildScrollView(
-            child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            BlocProvider(
+            child: MultiBlocProvider(
+          providers: [
+            BlocProvider<MovieCarouselBloc>(
               create: (context) => movieCarouselBloc!,
-              child: BlocBuilder<MovieCarouselBloc, MovieCarouselState>(
+            ),
+          ],
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              BlocBuilder<MovieCarouselBloc, MovieCarouselState>(
                 builder: (context, state) {
                   if (state is MovieCarouselLoaded) {
                     //print(state.movies);
@@ -123,19 +137,11 @@ class _HomePageState extends State<HomePage> {
                         //Positioned(bottom: 5.0, child: Text('data'))
                       ],
                     );
-                    // return MovieCarouselHeader(
-                    //     widget: MovieCarouselWidget(
-                    //   movies: state.movies,
-                    //   defaultIndex: state.defaultIndex,
-                    // ));
                   }
-                  return SizedBox();
+                  return const SizedBox();
                 },
               ),
-            ),
-            BlocProvider(
-              create: (context) => movieCarouselBloc!,
-              child: BlocBuilder<MovieCarouselBloc, MovieCarouselState>(
+              BlocBuilder<MovieCarouselBloc, MovieCarouselState>(
                 builder: (context, state) {
                   if (state is MovieCarouselLoaded) {
                     //print(state.movies);
@@ -146,9 +152,9 @@ class _HomePageState extends State<HomePage> {
                   }
                   return SizedBox();
                 },
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         )),
       )),
     );

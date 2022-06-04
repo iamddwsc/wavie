@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:wavie/common/constants/size_constants.dart';
+import 'package:wavie/common/extensions/size_extensions.dart';
 import 'package:wavie/presentation/journeys/home/movie_carousel/movie_card_widget.dart';
 
 class AnimatedMovieCardWidget extends StatelessWidget {
@@ -31,7 +32,7 @@ class AnimatedMovieCardWidget extends StatelessWidget {
               alignment: Alignment.topCenter,
               child: Container(
                 height: Curves.easeIn.transform(value) * 300,
-                width: Sizes.dimen_230,
+                width: Sizes.dimen_230.w,
                 child: child,
               ),
             );

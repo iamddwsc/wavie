@@ -1,6 +1,7 @@
 import 'dart:ui';
 
-final Color background = Color(0xFF131313);
+final Color background2 = Color(0xFF131313);
+final Color background = Color(0xFF000000);
 final Color button = Color(0xFF5c11bf);
 final Color white = Color(0xFFffffff);
 final Color sliverBackground = Color(0xFFfafafc);
@@ -14,6 +15,6 @@ final Color loveColor = Color(0xFF00ace6);
 final Color playerBlueBackground = Color(0xFFeeeffa);
 final Color playerGreyBackground = Color(0xFFf2f2f2);
 final Color textColor = Color(0xFF141417);
-final Color subTextColor = Color(0xFF5F5C6D);
+final Color button_background = Color.fromARGB(255, 79, 76, 91);
 final Color progressbar_mini = Color(0xFF111111);
 final Color searchBar = Color(0xFFf4f5fe);

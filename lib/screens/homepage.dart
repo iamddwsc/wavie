@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wavie/utils/appcolors.dart' as appcolors;
+import 'package:wavie/common/appcolors.dart' as appcolors;
 
 class HomePagez extends StatefulWidget {
   const HomePagez({Key? key}) : super(key: key);

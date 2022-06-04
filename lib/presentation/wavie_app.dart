@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wavie/presentation/tab_navigator.dart';
-import '../utils/appcolors.dart' as appcolors;
+import '../common/appcolors.dart' as appcolors;
 
 class WavieApp extends StatefulWidget {
   const WavieApp({Key? key}) : super(key: key);
@@ -55,7 +55,7 @@ class _WavieAppState extends State<WavieApp>
             return isFirstRouteInCurrentTab;
           },
           child: Scaffold(
-              resizeToAvoidBottomInset: false,
+              resizeToAvoidBottomInset: true,
               extendBody: true,
               body: Container(
                 color: appcolors.background,

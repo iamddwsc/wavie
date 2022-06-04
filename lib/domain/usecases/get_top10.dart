@@ -1,18 +1,17 @@
-import 'package:dartz/dartz.dart';
-import 'package:wavie/domain/entities/app_error.dart';
 import 'package:wavie/domain/entities/movie_entity.dart';
 import 'package:wavie/domain/entities/no_params.dart';
 import 'package:wavie/domain/repositories/movie_repository.dart';
 import 'package:wavie/domain/usecases/usecase.dart';
 
-class GetTrending extends UseCase<List<MovieEntity>, NoParams> {
+class GetTop10 extends UseCase<List<MovieEntity>, NoParams> {
   final MovieRepository repository;
 
-  GetTrending(this.repository);
+  GetTop10(this.repository);
 
   @override
   Future<List<MovieEntity>> call(NoParams params) async {
-    print('call');
-    return await repository.getTrending();
+    // TODO: implement call
+    return await repository.getTop10();
+    ;
   }
 }

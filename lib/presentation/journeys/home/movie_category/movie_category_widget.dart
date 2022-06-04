@@ -15,15 +15,6 @@ class MovieCategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return ListView.builder(itemBuilder: (context, index) {
-    //   final MovieEntity movie = movies[index];
-    //   return Container(
-    //       margin: EdgeInsets.all(5.0),
-    //       child: CachedNetworkImage(
-    //         imageUrl: movie.image_url!,
-    //         fit: BoxFit.cover,
-    //       ));
-    // });
     return SizedBox(
       height: 200.0,
       child: Column(
@@ -49,19 +40,24 @@ class MovieCategoryWidget extends StatelessWidget {
               },
               itemBuilder: (context, index) {
                 final MovieEntity movie = movies[index];
-                print('${ApiConstants.BASE_IMAGE_URL}${movie.image_url}');
-                return Container(
-                    // height: ,
-                    // width: 36,
-                    margin: EdgeInsets.all(5.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(Sizes.dimen_10),
-                      child: CachedNetworkImage(
-                        imageUrl:
-                            '${ApiConstants.BASE_IMAGE_URL}${movie.image_url}',
-                        fit: BoxFit.cover,
-                      ),
-                    ));
+                //print('${ApiConstants.BASE_IMAGE_URL}${movie.image_url}');
+                return GestureDetector(
+                  onTap: () {
+                    print(movie.title);
+                  },
+                  child: Container(
+                      // height: ,
+                      // width: 36,
+                      margin: EdgeInsets.all(5.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(Sizes.dimen_10),
+                        child: CachedNetworkImage(
+                          imageUrl:
+                              '${ApiConstants.BASE_IMAGE_URL}${movie.image_url}',
+                          fit: BoxFit.cover,
+                        ),
+                      )),
+                );
               },
             ),
           ),

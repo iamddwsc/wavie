@@ -6,7 +6,7 @@ import 'package:wavie/screens/login.dart';
 import 'package:wavie/presentation/themes/app_colors.dart';
 import 'di/get_it.dart' as getIt;
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   unawaited(getIt.init());
   runApp(const MyApp());
