@@ -6,14 +6,14 @@ class ScreenUtil {
   static const int defaultHeight = 896;
 
   /// Size of the phone in UI Design , px
-  num? uiWidthPx;
-  num? uiHeightPx;
+  late num uiWidthPx;
+  late num uiHeightPx;
 
   /// allowFontScaling Specifies whether fonts should scale to respect Text Size accessibility settings. The default is false.
   late bool allowFontScaling;
 
-  static double? _screenWidth;
-  static double? _screenHeight;
+  static late double _screenWidth;
+  static late double _screenHeight;
   static late double _pixelRatio;
   static late double _statusBarHeight;
   static late double _bottomBarHeight;
@@ -25,7 +25,7 @@ class ScreenUtil {
     return _instance;
   }
 
-  void init(
+  static void init(
       {num width = defaultWidth,
       num height = defaultHeight,
       bool allowFontScaling = false}) {
@@ -48,16 +48,16 @@ class ScreenUtil {
   static double get pixelRatio => _pixelRatio;
 
   /// The horizontal extent of this size.
-  static double get screenWidth => _screenWidth! / _pixelRatio;
+  static double get screenWidth => _screenWidth / _pixelRatio;
 
   ///The vertical extent of this size. dp
-  static double get screenHeight => _screenHeight! / _pixelRatio;
+  static double get screenHeight => _screenHeight / _pixelRatio;
 
   /// The vertical extent of this size. px
-  static double get screenWidthPx => _screenWidth!;
+  static double get screenWidthPx => _screenWidth;
 
   /// The vertical extent of this size. px
-  static double get screenHeightPx => _screenHeight!;
+  static double get screenHeightPx => _screenHeight;
 
   /// The offset from the top
   static double get statusBarHeight => _statusBarHeight / _pixelRatio;
@@ -69,10 +69,10 @@ class ScreenUtil {
   static double get bottomBarHeight => _bottomBarHeight;
 
   /// The ratio of the actual dp to the design draft px
-  double get scaleWidth => screenWidth / uiWidthPx!;
+  double get scaleWidth => screenWidth / uiWidthPx;
 
   double get scaleHeight =>
-      (_screenHeight! - _statusBarHeight - _bottomBarHeight) / uiHeightPx!;
+      (_screenHeight - _statusBarHeight - _bottomBarHeight) / uiHeightPx;
 
   double get scaleText => scaleWidth;
 

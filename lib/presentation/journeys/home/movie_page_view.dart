@@ -1,12 +1,6 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:wavie/common/constants/size_constants.dart';
-import 'package:wavie/common/screenutil/screenutil.dart';
+import 'package:flutter/material.dart';
 import 'package:wavie/domain/entities/movie_entity.dart';
-import 'package:wavie/presentation/journeys/home/movie_carousel/animated_movie_card_widget.dart';
 import 'package:wavie/presentation/journeys/home/movie_carousel/movie_card_widget.dart';
-import '../../../../common/extensions/size_extensions.dart';
 
 class MoviePageView extends StatefulWidget {
   final List<MovieEntity> movies;
@@ -54,7 +48,10 @@ class _MoviePageViewState extends State<MoviePageView> {
         itemBuilder: (context, index) {
           final MovieEntity movie = widget.movies[index];
           return MovieCardWidget(
-              movieId: movie.movieId!, image_url: movie.image_url!);
+            movieId: movie.movieId!,
+            image_url: movie.image_url!,
+            video_url: movie.video_url!,
+          );
         },
         pageSnapping: true,
         itemCount: widget.movies.length,

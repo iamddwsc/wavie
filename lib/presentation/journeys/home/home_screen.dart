@@ -1,14 +1,21 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wavie/common/extensions/size_extensions.dart';
 import 'package:wavie/di/get_it.dart';
 import 'package:wavie/presentation/blocs/movie_carousel/movie_carousel_bloc.dart';
-import 'package:wavie/presentation/journeys/home/custom_appbar/custom_appbar.dart';
+import 'package:wavie/presentation/journeys/home/custom_appbar/custom_home_appbar.dart';
+import 'package:wavie/presentation/widgets/app_error_widget.dart';
 import 'package:wavie/presentation/journeys/home/movie_carousel/movie_carousel_header.dart';
 import 'package:wavie/presentation/journeys/home/movie_carousel/movie_carousel_widget.dart';
 import 'package:wavie/presentation/journeys/home/movie_category/movie_category_widget.dart';
 import 'package:wavie/common/appcolors.dart' as appcolors;
 import 'package:wavie/presentation/journeys/menu/menu_widget.dart';
 import 'package:wavie/presentation/utils/custom_page_route.dart';
+
+import '../../../common/constants/size_constants.dart';
+import '../../../common/screenutil/screenutil.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,8 +24,13 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   MovieCarouselBloc? movieCarouselBloc;
+  bool _visible = true;
+  late final AnimationController _controller;
+  late ScrollController _scrollController;
+  double _scrollOffset = 0.0;
 
   @override
   void initState() {
@@ -26,6 +38,15 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     movieCarouselBloc = getItInstance<MovieCarouselBloc>();
     movieCarouselBloc?.add(CarouselLoadEvent());
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 450),
+    );
+    _scrollController = ScrollController()
+      ..addListener(() {
+        //print(_scrollController.offset);
+        _scrollOffset = _scrollController.offset;
+      });
   }
 
   @override
@@ -33,131 +54,213 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement dispose
     super.dispose();
     movieCarouselBloc?.close();
+    _controller.dispose();
+    _scrollController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-          //color: Colors.transparent,
-          //extendBody: true,
-
-          //extendBodyBehindAppBar: true,
-          body: NestedScrollView(
-        floatHeaderSlivers: false,
-        headerSliverBuilder: (context, innerBoxIsScrolled) => <Widget>[
-          SliverAppBar(
-            //expandedHeight: 100.0,
-            //foregroundColor: Colors.transparent,
-            //collapsedHeight: 30.0,
-            backgroundColor: Colors.black.withOpacity(1),
-            shadowColor: Colors.black.withOpacity(0.1),
-            floating: true,
-            snap: true,
-            pinned: true,
-            centerTitle: true,
-            elevation: 0,
-            //scrolledUnderElevation: 0,
-            stretch: false,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  //margin: EdgeInsets.only(left: 10.0),
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 15.0, horizontal: 12.0),
-                  // width: 32.0,
-                  // height: 32.0,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: const AssetImage(
-                            'assets/images/logo_w.png',
-                          ))),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context, rootNavigator: true).push(
-                        CustomPageRoute(
-                            child: MenuWidget(), direction: AxisDirection.up));
-                  },
-                  child: Container(
-                    //margin: EdgeInsets.only(right: 20.0), width: 32.0,
-                    height: 32.0,
-                    child: Image.asset(
-                      'assets/images/avatar.png',
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            bottom: PreferredSize(
-              preferredSize: Size(screenSize.width, 25.0),
-              child: Container(
-                margin: EdgeInsets.only(left: 60, right: 60, bottom: 5.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _AppBarButton(
-                        title: 'TV Shows', onTap: () => print('TV Shows')),
-                    _AppBarButton(
-                        title: 'Movies', onTap: () => print('Movies')),
-                    _AppBarButton(
-                        title: 'Categories', onTap: () => print('Categories')),
+    return Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: CustomHomeAppBar(
+          controller: _controller,
+          visible: _visible,
+          scrollOffset: _scrollOffset,
+          child: PreferredSize(
+            preferredSize: Size(screenSize.width, 60.0),
+            child: Container(
+              padding: EdgeInsets.fromLTRB(
+                  5.0, ScreenUtil.statusBarHeight + Sizes.dimen_4.h, 5.0, 0.0),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black.withOpacity(0.5),
+                    Colors.black.withOpacity(0.05),
                   ],
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.5),
+                    blurRadius: 20.0,
+                    spreadRadius: 10.0,
+                    offset: Offset(0.0, 5.0),
+                  ),
+                ],
               ),
-            ),
-          )
-        ],
-        body: SingleChildScrollView(
-            child: MultiBlocProvider(
-          providers: [
-            BlocProvider<MovieCarouselBloc>(
-              create: (context) => movieCarouselBloc!,
-            ),
-          ],
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              BlocBuilder<MovieCarouselBloc, MovieCarouselState>(
-                builder: (context, state) {
-                  if (state is MovieCarouselLoaded) {
-                    //print(state.movies);
-                    return Stack(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Container(
-                          child: MovieCarouselWidget(
-                              movies: state.movies,
-                              defaultIndex: state.defaultIndex),
+                        GestureDetector(
+                          onTap: () =>
+                              movieCarouselBloc?.add(CarouselLoadEvent()),
+                          child: Container(
+                            //margin: EdgeInsets.only(left: 10.0),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 12.0),
+                            // width: 32.0,
+                            // height: 32.0,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    // colorFilter: ColorFilter.mode(
+                                    //     Colors.white.withOpacity(0.9),
+                                    //     BlendMode.saturation),
+                                    fit: BoxFit.fill,
+                                    image: const AssetImage(
+                                      'assets/images/logo_w.png',
+                                    ))),
+                          ),
                         ),
-                        //Positioned(bottom: 5.0, child: Text('data'))
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context, rootNavigator: true).push(
+                                CustomPageRoute(
+                                    child: MenuWidget(),
+                                    direction: AxisDirection.up));
+                          },
+                          child: Container(
+                            //margin: EdgeInsets.only(right: 20.0), width: 32.0,
+                            height: 32.0,
+                            child: Image.asset(
+                              'assets/images/avatar.png',
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        )
                       ],
-                    );
-                  }
-                  return const SizedBox();
-                },
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 60, right: 60, bottom: 5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        _AppBarButton(
+                            title: 'TV Shows', onTap: () => print('TV Shows')),
+                        _AppBarButton(
+                            title: 'Movies', onTap: () => print('Movies')),
+                        _AppBarButton(
+                            title: 'Categories',
+                            onTap: () => print('Categories')),
+                      ],
+                    ),
+                  )
+                ],
               ),
-              BlocBuilder<MovieCarouselBloc, MovieCarouselState>(
-                builder: (context, state) {
-                  if (state is MovieCarouselLoaded) {
-                    //print(state.movies);
-                    return MovieCategoryWidget(
-                      movies: state.movies,
-                      contentTitle: 'Trending',
-                    );
-                  }
-                  return SizedBox();
-                },
-              )
-            ],
+            ),
           ),
-        )),
-      )),
-    );
+        ),
+        body: NotificationListener<UserScrollNotification>(
+          onNotification: ((notification) {
+            if (notification.direction == ScrollDirection.forward) {
+              if (!_visible) setState(() => _visible = true);
+            } else if (notification.direction == ScrollDirection.reverse) {
+              //print('reverse');
+              if (_visible) setState(() => _visible = false);
+            }
+            return true;
+          }),
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            //dragStartBehavior: DragStartBehavior.start,
+            //physics: ScrollPhysics(parent: RangeMaintainingScrollPhysics()),
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider<MovieCarouselBloc>(
+                    create: (context) => movieCarouselBloc!),
+              ],
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  BlocBuilder<MovieCarouselBloc, MovieCarouselState>(
+                    builder: (context, state) {
+                      if (state is MovieCarouselLoaded) {
+                        //print(state.movies);
+                        return Stack(
+                          children: <Widget>[
+                            Container(
+                              child: MovieCarouselWidget(
+                                  movies: state.movies,
+                                  defaultIndex: state.defaultIndex),
+                            ),
+                            //Positioned(bottom: 5.0, child: Text('data'))
+                          ],
+                        );
+                      } else if (state is MovieCarouselError) {
+                        //print(state.errorType);
+                        return Container(
+                          margin: EdgeInsets.only(top: 30.0),
+                          alignment: Alignment.center,
+                          child: AppErrorWidget(
+                            onPressed: () =>
+                                movieCarouselBloc?.add(CarouselLoadEvent()),
+                            errorType: state.errorType,
+                          ),
+                        );
+                      }
+                      return const SizedBox();
+                    },
+                  ),
+                  BlocBuilder<MovieCarouselBloc, MovieCarouselState>(
+                    builder: (context, state) {
+                      if (state is MovieCarouselLoaded) {
+                        //print(state.movies);
+                        return MovieCategoryWidget(
+                          movies: state.movies,
+                          contentTitle: 'Trending',
+                        );
+                      }
+                      return SizedBox();
+                    },
+                  ),
+                  BlocBuilder<MovieCarouselBloc, MovieCarouselState>(
+                    builder: (context, state) {
+                      if (state is MovieCarouselLoaded) {
+                        //print(state.movies);
+                        return MovieCategoryWidget(
+                          movies: state.movies,
+                          contentTitle: 'Trending',
+                        );
+                      }
+                      return SizedBox();
+                    },
+                  ),
+                  BlocBuilder<MovieCarouselBloc, MovieCarouselState>(
+                    builder: (context, state) {
+                      if (state is MovieCarouselLoaded) {
+                        //print(state.movies);
+                        return MovieCategoryWidget(
+                          movies: state.movies,
+                          contentTitle: 'Trending',
+                        );
+                      }
+                      return SizedBox();
+                    },
+                  ),
+                  BlocBuilder<MovieCarouselBloc, MovieCarouselState>(
+                    builder: (context, state) {
+                      if (state is MovieCarouselLoaded) {
+                        //print(state.movies);
+                        return MovieCategoryWidget(
+                          movies: state.movies,
+                          contentTitle: 'Trending',
+                        );
+                      }
+                      return SizedBox();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ));
   }
 }
 

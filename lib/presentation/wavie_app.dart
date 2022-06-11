@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:wavie/presentation/tab_navigator.dart';
+import 'package:wavie/presentation/themes/app_colors.dart';
 import '../common/appcolors.dart' as appcolors;
 
 class WavieApp extends StatefulWidget {
@@ -12,13 +14,12 @@ class WavieApp extends StatefulWidget {
 class _WavieAppState extends State<WavieApp>
     with SingleTickerProviderStateMixin {
   String _currentPage = "Page1";
-  List<String> pageKeys = ["Page1", "Page2", "Page3", "Page4", "Page5"];
+  List<String> pageKeys = ["Page1", "Page2", "Page3", "Page4"];
   Map<String, GlobalKey<NavigatorState>> _navigatorKeys = {
     "Page1": GlobalKey<NavigatorState>(),
     "Page2": GlobalKey<NavigatorState>(),
     "Page3": GlobalKey<NavigatorState>(),
     "Page4": GlobalKey<NavigatorState>(),
-    "Page5": GlobalKey<NavigatorState>(),
   };
   int _selectedIndex = 0;
 
@@ -39,8 +40,22 @@ class _WavieAppState extends State<WavieApp>
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    Hive.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
+      color: AppColor.background,
       child: WillPopScope(
           onWillPop: () async {
             final isFirstRouteInCurrentTab =
@@ -58,14 +73,14 @@ class _WavieAppState extends State<WavieApp>
               resizeToAvoidBottomInset: true,
               extendBody: true,
               body: Container(
-                color: appcolors.background,
+                color: AppColor.background,
                 child: Stack(
                   children: [
                     _buildOffstageNavigator("Page1"),
                     _buildOffstageNavigator("Page2"),
                     _buildOffstageNavigator("Page3"),
                     _buildOffstageNavigator("Page4"),
-                    _buildOffstageNavigator("Page5"),
+                    //_buildOffstageNavigator("Page5"),
                     // Positioned(
                     //     left: 20.0,
                     //     top: 10.0,
@@ -115,22 +130,9 @@ class _WavieAppState extends State<WavieApp>
                 ),
               ),
               bottomNavigationBar: Container(
-                // decoration: BoxDecoration(
-                //     gradient: LinearGradient(
-                //   colors: [
-                //     Colors.white.withOpacity(0.4),
-                //     Colors.blue[200]!,
-                //     //Colors.black.withOpacity(1.0)
-                //   ],
-                //   begin: Alignment.topCenter,
-                //   end: Alignment.bottomCenter,
-                //   stops: [0.0, 1.0],
-                //   tileMode: TileMode.decal,
-                // )),
-                // color: Colors.black.withOpacity(0.8),
                 child: BottomNavigationBar(
                   elevation: 0.0,
-                  backgroundColor: Color(0x35000000),
+                  backgroundColor: AppColor.background,
                   selectedItemColor: appcolors.white,
                   unselectedItemColor: appcolors.sliverBackground,
                   // selectedLabelStyle: TextStyle(

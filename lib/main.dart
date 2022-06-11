@@ -2,13 +2,27 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:wavie/data/models/movie_detail_model.dart';
+import 'package:wavie/data/models/movie_model.dart';
+import 'package:wavie/domain/entities/movie_detail_entity.dart';
+
 import 'package:wavie/screens/login.dart';
 import 'package:wavie/presentation/themes/app_colors.dart';
+import 'common/screenutil/screenutil.dart';
 import 'di/get_it.dart' as getIt;
+import 'presentation/themes/theme_text.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   unawaited(getIt.init());
+  await Hive.initFlutter();
+  Hive.registerAdapter(MovieDetailEntityAdapter());
+  await Hive.openBox<MovieDetailEntity>('currentPlaying');
+  await Hive.openBox<MovieDetailEntity>('myList');
+  await Hive.openBox<bool>('isAlwaysDown');
+  await Hive.openBox<String>('timeStamp');
+
   runApp(const MyApp());
 }
 
@@ -18,19 +32,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       //darkTheme: ThemeData.from(colorScheme: colorScheme),
       //themeMode: ThemeMode.dark,
       title: 'Wavie App',
       theme: ThemeData(
-          scaffoldBackgroundColor: Colors.black,
-          primaryColor: AppColor.button,
-          backgroundColor: Colors.black,
-          //primaryTextTheme: Typography(platform: TargetPlatform.iOS).white,
-          textTheme: Typography(platform: TargetPlatform.iOS).white,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          appBarTheme: const AppBarTheme(elevation: 0)),
+        //unselectedWidgetColor: AppColor.royalBlue,
+        scaffoldBackgroundColor: Colors.black,
+        primaryColor: AppColor.background,
+        backgroundColor: Colors.black,
+        //primaryTextTheme: Typography(platform: TargetPlatform.iOS).white,
+        textTheme: ThemeText.getTextTheme(),
+        //visualDensity: VisualDensity.adaptivePlatformDensity,
+        //appBarTheme: const AppBarTheme(elevation: 0),
+      ),
       home: const LoginPage(),
     );
   }

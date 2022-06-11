@@ -3,23 +3,17 @@ import 'dart:ui';
 class AppColor {
   AppColor._();
 
-  static const background = Color(0xFF131313);
-  static const button = Color(0xFF5c11bf);
-  final Color white = Color(0xFFffffff);
-  final Color sliverBackground = Color(0xFFfafafc);
-  final Color menu1Color = Color(0xFFf9d263);
-  final Color menu2Color = Color(0xFFf2603d);
-  final Color menu3Color = Color(0xFF04abe6);
-  final Color tabBarViewColor = Color(0xFFfdfdfd);
-  final Color startColor = Color(0xFFfdc746);
-  final Color subTitleText = Color(0xFF9e9e9e);
-  final Color loveColor = Color(0xFF00ace6);
-  final Color playerBlueBackground = Color(0xFFeeeffa);
-  final Color playerGreyBackground = Color(0xFFf2f2f2);
-  final Color textColor = Color(0xFF141417);
-  final Color subTextColor = Color(0xFF5F5C6D);
-  final Color progressbar_mini = Color(0xFF111111);
-  final Color searchBar = Color(0xFFf4f5fe);
+  static const Color background = Color(0xFF000000);
+  static const Color details_grey = Color(0xFF999999);
+  static const Color white = Color(0xFFffffff);
+  static const Color textColor = Color(0xFF141417);
+  static const Color button_background = Color(0xFF131313);
+  static const Color button_text = Color(0xFFc6c6c6);
+  static const Color close_button_background = Color(0xFF202020);
+
+  static const Color progress_bar_color = Color(0xFFf51313);
+  static const Color progress_bar_buffed_color = Color(0x7d7d7d);
+  static const Color progress_bar_background_color = Color(0xFF333333);
 
   static const Color vulcan = Color(0xFF141221);
   static const Color royalBlue = Color(0xFF604FEF);

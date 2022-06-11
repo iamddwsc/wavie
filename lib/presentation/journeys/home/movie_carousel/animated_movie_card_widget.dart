@@ -9,14 +9,16 @@ class AnimatedMovieCardWidget extends StatelessWidget {
   final int index;
   final int movieId;
   final String image_url;
+  final String video_url;
   final PageController pageController;
-  const AnimatedMovieCardWidget(
-      {Key? key,
-      required this.index,
-      required this.movieId,
-      required this.image_url,
-      required this.pageController})
-      : super(key: key);
+  const AnimatedMovieCardWidget({
+    Key? key,
+    required this.index,
+    required this.movieId,
+    required this.image_url,
+    required this.pageController,
+    required this.video_url,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,7 @@ class AnimatedMovieCardWidget extends StatelessWidget {
             );
           }
         },
-        child: MovieCardWidget(movieId: movieId, image_url: image_url));
+        child: MovieCardWidget(
+            movieId: movieId, image_url: image_url, video_url: ''));
   }
 }

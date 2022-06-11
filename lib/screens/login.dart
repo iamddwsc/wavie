@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:wavie/common/api_constants.dart';
+import 'package:wavie/data/core/api_constants.dart';
 import 'package:wavie/data/models/movie_model.dart';
 import 'package:wavie/data/repositories/movie_repository_impl.dart';
 import 'package:wavie/domain/entities/app_error.dart';
@@ -10,10 +10,13 @@ import 'package:wavie/domain/entities/movie_entity.dart';
 import 'package:wavie/domain/entities/no_params.dart';
 import 'package:wavie/domain/repositories/movie_repository.dart';
 import 'package:wavie/domain/usecases/get_trending.dart';
+import 'package:wavie/presentation/themes/app_colors.dart';
 import 'package:wavie/presentation/wavie_app.dart';
 import 'package:wavie/common/appcolors.dart' as appcolors;
 import 'package:wavie/data/data_sources/movie_remote_data_source.dart';
 import 'package:wavie/data/data_sources/movie_remote_data_source_impl.dart';
+
+import '../common/screenutil/screenutil.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -29,15 +32,6 @@ class _LoginPageState extends State<LoginPage> {
   bool _passwordChanged = false;
 
   String _password = "";
-  //MovieRemoteDataSource dataSource = MovieRemoteDataSourceImpl(Client());
-  // Client client = Client();
-  // Future<List<MovieEntity>> getx() async {
-  //   MovieRemoteDataSource dataSource = MovieRemoteDataSourceImpl(Client());
-  //   MovieRepository movieRepository = MovieRepositoryImpl(dataSource);
-  //   GetTrending getTrending = GetTrending(movieRepository);
-  //   List<MovieEntity> movies = await getTrending(NoParams());
-  //   return movies;
-  // }
 
   void _toggleObscured() {
     setState(() {
@@ -110,42 +104,8 @@ class _LoginPageState extends State<LoginPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // FutureBuilder<List<MovieEntity>>(
-                          //   future: getx(),
-                          //   builder: (context, snapshot) {
-                          //     if ((snapshot.hasError) || (!snapshot.hasData)) {
-                          //       return Container(
-                          //         child: Center(
-                          //           child: Container(
-                          //               height: 265.0,
-                          //               child: Center(
-                          //                   child:
-                          //                       CircularProgressIndicator())),
-                          //         ),
-                          //       );
-                          //     }
-
-                          //     List<MovieEntity>? movies = snapshot.data;
-
-                          //     // print(
-                          //     //     "${ApiConstants.BASE_URL}abc${movies![1].image!}");
-                          //     // return Container(
-                          //     //   height: 200,
-                          //     //   width: 200,
-                          //     //   child: CachedNetworkImage(
-                          //     //     imageUrl: ApiConstants.BASE_IMAGE_URL +
-                          //     //         movies![4].image_url!,
-                          //     //     fit: BoxFit.contain,
-                          //     //     //headers: {"Connection": "Keep-Alive"},
-                          //     //     // httpHeaders: {
-                          //     //     //   "Connection": "Keep-Alive",
-                          //     //     // },
-                          //     //   ),
-                          //     // );
-                          //     return Container();
-                          //   },
-                          // ),
                           TextField(
+                            style: TextStyle(color: AppColor.background),
                             decoration: InputDecoration(
                                 hintText: "Email or phone number",
                                 isDense: true,
@@ -164,6 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                             height: 20.0,
                           ),
                           TextFormField(
+                            style: TextStyle(color: AppColor.background),
                             controller: textController,
                             textInputAction: TextInputAction.go,
                             keyboardType: TextInputType.visiblePassword,
@@ -182,6 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                                 val!.length < 6 ? 'Password too short.' : null,
                             onSaved: (val) => _password = val!,
                             decoration: InputDecoration(
+                              iconColor: AppColor.background,
                               floatingLabelBehavior: FloatingLabelBehavior
                                   .never, //Hides label on focus or if filled
                               hintText: "Password",
@@ -204,6 +166,8 @@ class _LoginPageState extends State<LoginPage> {
                                     child: Text(
                                       _obscureText ? "SHOW" : "HIDE",
                                       textAlign: TextAlign.center,
+                                      style:
+                                          TextStyle(color: AppColor.background),
                                     )),
                               ),
                             ),

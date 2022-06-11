@@ -34,7 +34,7 @@ class ThemeText {
 
   static TextStyle? get whiteBodyText2 => _poppinsTextTheme.bodyText2?.copyWith(
         color: Colors.white,
-        fontSize: Sizes.dimen_14.sp,
+        fontSize: Sizes.dimen_15.sp,
         wordSpacing: 0.25,
         letterSpacing: 0.25,
         height: 1.5,

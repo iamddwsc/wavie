@@ -4,8 +4,7 @@ import 'package:wavie/presentation/journeys/home/home_screen.dart';
 import 'package:wavie/screens/discoverpage.dart';
 import 'package:wavie/screens/dowloadspage.dart';
 import 'package:wavie/screens/homepage.dart';
-import 'package:wavie/screens/searchpage.dart';
-import 'package:wavie/screens/userpage.dart';
+import 'package:wavie/presentation/journeys/search/search_screen.dart';
 
 class TabNavigatorRoutes {
   static const String root = '/';
@@ -27,9 +26,8 @@ class TabNavigator extends StatelessWidget {
       child = SearchPage();
     else if (tabItem == "Page3")
       child = DiscoverPage();
-    else if (tabItem == "Page4")
-      child = DownloadsPage();
-    else if (tabItem == "Page5") child = UserPage();
+    else if (tabItem == "Page4") child = DownloadsPage();
+    //else if (tabItem == "Page5") child = UserPage();
 
     return Navigator(
       key: navigatorKey,

@@ -1,5 +1,3 @@
-import 'package:dartz/dartz.dart';
-import 'package:wavie/domain/entities/app_error.dart';
 import 'package:wavie/domain/entities/movie_entity.dart';
 import 'package:wavie/domain/entities/no_params.dart';
 import 'package:wavie/domain/repositories/movie_repository.dart';
@@ -12,7 +10,7 @@ class GetTrending extends UseCase<List<MovieEntity>, NoParams> {
 
   @override
   Future<List<MovieEntity>> call(NoParams params) async {
-    print('call');
+    //('call');
     return await repository.getTrending();
   }
 }

@@ -2,9 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:wavie/common/api_constants.dart';
+import 'package:wavie/data/core/api_constants.dart';
 import 'package:wavie/common/constants/size_constants.dart';
 import 'package:wavie/domain/entities/movie_entity.dart';
+
+import '../../../utils/custom_page_route.dart';
+import '../../movie_detail/movie_detail_arguments.dart';
+import '../../movie_detail/movie_detail_widget.dart';
 
 class MovieCategoryWidget extends StatelessWidget {
   final List<MovieEntity> movies;
@@ -29,7 +33,7 @@ class MovieCategoryWidget extends StatelessWidget {
           ),
           Expanded(
             child: ListView.separated(
-              reverse: true,
+              reverse: false,
               shrinkWrap: true,
               itemCount: movies.length,
               scrollDirection: Axis.horizontal,
@@ -43,18 +47,27 @@ class MovieCategoryWidget extends StatelessWidget {
                 //print('${ApiConstants.BASE_IMAGE_URL}${movie.image_url}');
                 return GestureDetector(
                   onTap: () {
-                    print(movie.title);
+                    Navigator.of(context, rootNavigator: true).push(
+                      CustomPageRoute(
+                          child: MovieDetailScreen(
+                            movieDetailArguments:
+                                MovieDetailArguments(movie.movieId!),
+                            video_url: movie.video_url!,
+                          ),
+                          direction: AxisDirection.up),
+                    );
                   },
                   child: Container(
                       // height: ,
-                      // width: 36,
+                      //width: 110,
                       margin: EdgeInsets.all(5.0),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(Sizes.dimen_10),
                         child: CachedNetworkImage(
                           imageUrl:
-                              '${ApiConstants.BASE_IMAGE_URL}${movie.image_url}',
+                              '${ApiConstants.BASE_SOURCE_URL}${movie.image_url}',
                           fit: BoxFit.cover,
+                          width: 105.0,
                         ),
                       )),
                 );
