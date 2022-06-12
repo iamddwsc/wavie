@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -15,6 +16,7 @@ import 'package:wavie/common/appcolors.dart' as appcolors;
 import 'package:wavie/presentation/journeys/menu/menu_widget.dart';
 import 'package:wavie/presentation/utils/custom_page_route.dart';
 
+import '../../../common/constants/api_constants.dart';
 import '../../../common/constants/size_constants.dart';
 import '../../../common/screenutil/screenutil.dart';
 import '../../../data/models/boxes.dart';
@@ -64,6 +66,7 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     var myToken = Boxes.getMyToken().get('token')!;
+    var myUser = Boxes.getMyUser().get('myUser')!;
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: CustomHomeAppBar(
@@ -131,11 +134,12 @@ class _HomePageState extends State<HomePage>
                           },
                           child: Container(
                             //margin: EdgeInsets.only(right: 20.0), width: 32.0,
-                            height: 32.0,
-                            child: Image.asset(
-                              'assets/images/avatar.png',
-                              fit: BoxFit.fill,
-                            ),
+                            height: 40.0,
+                            child: CachedNetworkImage(
+                                imageUrl: ApiConstants.BASE_SOURCE_URL +
+                                    '/storage/users/' +
+                                    myUser.photo!,
+                                fit: BoxFit.cover),
                           ),
                         )
                       ],

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -11,6 +12,7 @@ import 'package:wavie/presentation/blocs/authentication/authentication_bloc.dart
 import 'package:wavie/presentation/journeys/menu/my_list_widget.dart';
 import 'package:wavie/presentation/journeys/menu/profile_widget.dart';
 
+import '../../../common/constants/api_constants.dart';
 import '../../../common/constants/size_constants.dart';
 import '../../../common/screenutil/screenutil.dart';
 import '../../../data/models/boxes.dart';
@@ -25,6 +27,7 @@ class MenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var box = Boxes.getIsAlwaysDown();
+    var myUser = Boxes.getMyUser().get('myUser')!;
     var arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, String>{}) as Map;
     AuthenticationBloc authenticationBloc = getItInstance<AuthenticationBloc>();
@@ -81,16 +84,17 @@ class MenuWidget extends StatelessWidget {
                       height: 80.0,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(6.0),
-                        child: Image.asset(
-                          'assets/images/avatar.png',
-                          fit: BoxFit.fill,
-                        ),
+                        child: CachedNetworkImage(
+                            imageUrl: ApiConstants.BASE_SOURCE_URL +
+                                '/storage/users/' +
+                                myUser.photo!,
+                            fit: BoxFit.cover),
                       ),
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
                       child: Text(
-                        'Đức',
+                        '${myUser.lastName} ${myUser.firstName}',
                         style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.w600,

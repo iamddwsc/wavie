@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart';
@@ -98,60 +99,68 @@ class _CommentWidgetState extends State<CommentWidget> {
               //     style: TextStyle(color: Colors.white),
               //   ),
               // ),
-              child: Row(
-                children: [
-                  Placeholder(
-                    fallbackHeight: 64.0,
-                    fallbackWidth: 64.0,
-                  ),
-                  SizedBox(
-                    width: 10.0,
-                  ),
-                  Expanded(
-                    //height: 70.0,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${value[index].user!.firstName} ${value[index].user!.lastName}',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall!
-                              .copyWith(
-                                  fontSize: Sizes.dimen_16,
-                                  fontWeight: FontWeight.w600),
-                        ),
-                        Container(
-                          width: ScreenUtil().setWidth(size.width * 0.7),
-                          child: Text(
-                            value[index].comment!.intelliTrimWithDot(),
-                            style: TextStyle(color: Colors.white),
-                            overflow: TextOverflow.ellipsis,
-                            softWrap: false,
-                            maxLines: 2,
-                          ),
-                        ),
-                      ],
+              child: Container(
+                padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 60,
+                      height: 60,
+                      child: CachedNetworkImage(
+                          imageUrl: ApiConstants.BASE_SOURCE_URL +
+                              '/storage/users/' +
+                              value[index].user!.photo!,
+                          fit: BoxFit.cover),
                     ),
-                  ),
-                  if (myUser!.userId == value[index].user!.userId)
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.more_horiz_rounded,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            //list_comments.value.removeAt(index);
-                            //_panelController.open();
-                          });
-                        },
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    Expanded(
+                      //height: 70.0,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${value[index].user!.firstName} ${value[index].user!.lastName}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(
+                                    fontSize: Sizes.dimen_16,
+                                    fontWeight: FontWeight.w600),
+                          ),
+                          Container(
+                            width: ScreenUtil().setWidth(size.width * 0.7),
+                            child: Text(
+                              value[index].comment!.intelliTrimWithDot(),
+                              style: TextStyle(color: Colors.white),
+                              overflow: TextOverflow.ellipsis,
+                              softWrap: false,
+                              maxLines: 2,
+                            ),
+                          ),
+                        ],
                       ),
-                    )
-                ],
+                    ),
+                    if (myUser!.userId == value[index].user!.userId)
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.more_horiz_rounded,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              //list_comments.value.removeAt(index);
+                              //_panelController.open();
+                            });
+                          },
+                        ),
+                      )
+                  ],
+                ),
               ),
             );
           },

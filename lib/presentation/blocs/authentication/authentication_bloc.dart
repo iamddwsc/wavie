@@ -41,10 +41,10 @@ class AuthenticationBloc
           emit(UpdateUserSuccess(response));
         }
       } catch (e) {
-        //var message = getErrorMessage(e as AppErrorType);
+        var message = getErrorMessage(e as AppErrorType);
         print(e);
-        // emit(SignInError(message));
-        //print(e);
+        emit(SignInError(message));
+        print(e);
       }
     });
   }

@@ -497,6 +497,20 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                               fontWeight: FontWeight.bold),
                         ),
                       ),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: _buildTextField(context, '', 'value')),
+                          Container(
+                            height: 40.0,
+                            child: FloatingActionButton(
+                                onPressed: () {
+                                  print('ABC Comment');
+                                },
+                                child: Icon(Icons.send)),
+                          ),
+                        ],
+                      ),
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: 10.0),
                         child: CommentWidget(
@@ -589,5 +603,43 @@ Widget widget_item(String text, context, {bool dot = true, bool trim = false}) {
           .copyWith(color: AppColor.details_grey),
       //overflow: TextOverflow.ellipsis,
     ),
+  );
+}
+
+Widget _buildTextField(BuildContext context, String label, String value,
+    {bool enable = true, TextEditingController? controller}) {
+  return TextFormField(
+    enabled: enable,
+    controller: controller,
+    style: TextStyle(
+        fontSize: Sizes.dimen_18,
+        color: enable ? AppColor.white : AppColor.white.withOpacity(0.2)),
+    decoration: InputDecoration(
+      floatingLabelBehavior: FloatingLabelBehavior.always,
+      hintText: 'Write a comment',
+      hintStyle:
+          TextStyle(color: AppColor.white.withOpacity(0.8), fontSize: 16.0),
+      labelText: label,
+      labelStyle: Theme.of(context).textTheme.headline6!.copyWith(
+          color: enable ? AppColor.white : AppColor.white.withOpacity(0.2)),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        borderSide:
+            BorderSide(color: AppColor.white.withOpacity(0.3), width: 2.0),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide:
+            BorderSide(color: Colors.white.withOpacity(0.8), width: 1.9),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      disabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        borderSide:
+            BorderSide(color: AppColor.white.withOpacity(0.2), width: 2.0),
+      ),
+    ),
+    autocorrect: false,
+
+    //initialValue: value,
   );
 }

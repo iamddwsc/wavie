@@ -97,11 +97,17 @@ class ApiClient {
         'last_name': params['last_name'],
         'first_name': params['first_name'],
       };
-
-      var request = MultipartRequest('POST', path)
-        ..fields.addAll(params2)
-        ..headers.addAll(headers)
-        ..files.add(await MultipartFile.fromPath('image', filepath!));
+      var request;
+      if (filepath != '') {
+        request = MultipartRequest('POST', path)
+          ..fields.addAll(params2)
+          ..headers.addAll(headers)
+          ..files.add(await MultipartFile.fromPath('image', filepath!));
+      } else {
+        request = MultipartRequest('POST', path)
+          ..fields.addAll(params2)
+          ..headers.addAll(headers);
+      }
 
       var streamedResponse = await request.send();
       var response = await Response.fromStream(streamedResponse);
