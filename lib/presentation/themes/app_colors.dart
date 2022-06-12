@@ -6,6 +6,7 @@ class AppColor {
   static const Color background = Color(0xFF000000);
   static const Color details_grey = Color(0xFF999999);
   static const Color white = Color(0xFFffffff);
+  static const Color red = Color.fromARGB(255, 255, 0, 0);
   static const Color textColor = Color(0xFF141417);
   static const Color button_background = Color(0xFF131313);
   static const Color button_text = Color(0xFFc6c6c6);
@@ -14,6 +15,8 @@ class AppColor {
   static const Color progress_bar_color = Color(0xFFf51313);
   static const Color progress_bar_buffed_color = Color(0x7d7d7d);
   static const Color progress_bar_background_color = Color(0xFF333333);
+
+  static const Color profile_background = Color(0xFF161616);
 
   static const Color vulcan = Color(0xFF141221);
   static const Color royalBlue = Color(0xFF604FEF);

@@ -4,7 +4,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:wavie/data/models/movie_model.dart';
 
-import '../../../data/core/api_constants.dart';
+import '../../../common/constants/api_constants.dart';
 import '../../utils/custom_page_route.dart';
 import '../movie_detail/movie_detail_arguments.dart';
 import '../movie_detail/movie_detail_widget.dart';

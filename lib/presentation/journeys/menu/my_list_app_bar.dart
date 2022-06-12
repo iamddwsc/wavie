@@ -12,7 +12,7 @@ class MyListAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final box = Boxes.getIsAlwaysDown();
+    var box = Boxes.getIsAlwaysDown();
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -30,7 +30,7 @@ class MyListAppBar extends StatelessWidget {
           child: Icon(
             Icons.arrow_back_ios_new,
             color: Colors.white,
-            size: Sizes.dimen_12.h,
+            size: Sizes.dimen_10.h,
           ),
         ),
         Text(

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:wavie/data/core/api_constants.dart';
+import 'package:wavie/common/constants/api_constants.dart';
 import 'package:wavie/data/core/api_client.dart';
 import 'package:wavie/data/data_sources/movie_remote_data_source.dart';
 import 'package:wavie/data/models/movie_detail_result_model.dart';
@@ -27,7 +27,7 @@ class MovieRemoteDataSourceImpl extends MovieRemoteDataSource {
       // 6
       return movies!;
     } catch (e) {
-      print(e);
+      //print(e);
       rethrow;
     }
   }

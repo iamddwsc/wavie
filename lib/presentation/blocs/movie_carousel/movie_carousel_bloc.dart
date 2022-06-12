@@ -22,7 +22,7 @@ class MovieCarouselBloc extends Bloc<MovieCarouselEvent, MovieCarouselState> {
               movies: movies, defaultIndex: event.defaultIndex));
         }
       } catch (e) {
-        print(e);
+        //print(e);
         emit(MovieCarouselError(e as AppErrorType));
         //emit(MovieCarouselError(AppErrorType.apiError));
       }

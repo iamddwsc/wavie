@@ -4,10 +4,12 @@ import 'package:animate_icons/animate_icons.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wavie/common/constants/size_constants.dart';
 import 'package:wavie/common/extensions/size_extensions.dart';
 import 'package:wavie/data/models/boxes.dart';
+import 'package:wavie/data/models/user.dart';
 import 'package:wavie/di/get_it.dart';
 import 'package:wavie/presentation/journeys/movie_detail/comment_widget.dart';
 import 'package:wavie/presentation/journeys/movie_detail/movie_detail_app_bar.dart';
@@ -19,7 +21,7 @@ import 'package:wavie/presentation/themes/app_colors.dart';
 import '../../../common/extensions/string_extension.dart';
 
 import '../../../common/screenutil/screenutil.dart';
-import '../../../data/core/api_constants.dart';
+import '../../../common/constants/api_constants.dart';
 import '../../utils/custom_page_route.dart';
 import 'big_poster.dart';
 import 'movie_trailer_widget.dart';
@@ -164,7 +166,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                 return Container(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       BigPoster(
                         movie: movieDetailEntity,
@@ -334,7 +336,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 15.0),
+                        margin: EdgeInsets.only(
+                            left: 20.0, top: 15.0, bottom: 10.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           mainAxisSize: MainAxisSize.max,
@@ -467,12 +470,35 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                             //       .millisecondsSinceEpoch
                             //       .runtimeType);
                             // }),
-                            ActionButton(
-                                'assets/icons/send.png', 'Send', () {}),
+                            ActionButton('assets/icons/send.png', 'Send', () {
+                              var z = Hive.box('authenticationBox');
+                              print(z.get('token'));
+                              var y = Hive.box<User>('myUserBox');
+                              print(y.get('myUser')!.firstName);
+                            }),
                           ],
                         ),
                       ),
                       Container(
+                        width: 80.0,
+                        height: 7.0,
+                        margin: EdgeInsets.only(left: 10.0, top: 10.0),
+                        decoration: BoxDecoration(color: AppColor.red),
+                      ),
+                      Container(
+                        padding:
+                            EdgeInsets.only(top: 5.0, left: 10.0, bottom: 20.0),
+                        //width: 50.0,
+                        child: Text(
+                          'Comment',
+                          style: TextStyle(
+                              color: AppColor.white,
+                              fontSize: Sizes.dimen_15,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10.0),
                         child: CommentWidget(
                             movieId: widget.movieDetailArguments.movieId),
                       )

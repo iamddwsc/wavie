@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wavie/common/constants/route_constants.dart';
 import 'package:wavie/common/extensions/size_extensions.dart';
 import 'package:wavie/di/get_it.dart';
 import 'package:wavie/presentation/blocs/movie_carousel/movie_carousel_bloc.dart';
@@ -16,6 +17,7 @@ import 'package:wavie/presentation/utils/custom_page_route.dart';
 
 import '../../../common/constants/size_constants.dart';
 import '../../../common/screenutil/screenutil.dart';
+import '../../../data/models/boxes.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -61,6 +63,7 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
+    var myToken = Boxes.getMyToken().get('token')!;
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: CustomHomeAppBar(
@@ -118,10 +121,13 @@ class _HomePageState extends State<HomePage>
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context, rootNavigator: true).push(
-                                CustomPageRoute(
-                                    child: MenuWidget(),
-                                    direction: AxisDirection.up));
+                            Navigator.of(context, rootNavigator: true)
+                                .pushNamed(RouteList.menu,
+                                    arguments: {'token': myToken});
+                            // Navigator.of(context, rootNavigator: true).push(
+                            //     CustomPageRoute(
+                            //         child: MenuWidget(),
+                            //         direction: AxisDirection.up));
                           },
                           child: Container(
                             //margin: EdgeInsets.only(right: 20.0), width: 32.0,
@@ -156,18 +162,28 @@ class _HomePageState extends State<HomePage>
             ),
           ),
         ),
-        body: NotificationListener<UserScrollNotification>(
+        body: NotificationListener<ScrollNotification>(
           onNotification: ((notification) {
-            if (notification.direction == ScrollDirection.forward) {
-              if (!_visible) setState(() => _visible = true);
-            } else if (notification.direction == ScrollDirection.reverse) {
-              //print('reverse');
-              if (_visible) setState(() => _visible = false);
+            //print(notification.direction);
+            //if (notification.metrics.axisDirection)
+            if (notification.metrics.axis == Axis.vertical) {
+              if (notification is UserScrollNotification) {
+                var noti = notification as UserScrollNotification;
+                if (noti.direction == ScrollDirection.forward) {
+                  if (!_visible) setState(() => _visible = true);
+                } else if (noti.direction == ScrollDirection.reverse) {
+                  //print('reverse');
+                  if (_visible) setState(() => _visible = false);
+                }
+              }
             }
+
             return true;
           }),
           child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
             controller: _scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             //dragStartBehavior: DragStartBehavior.start,
             //physics: ScrollPhysics(parent: RangeMaintainingScrollPhysics()),
@@ -195,13 +211,15 @@ class _HomePageState extends State<HomePage>
                         );
                       } else if (state is MovieCarouselError) {
                         //print(state.errorType);
-                        return Container(
-                          margin: EdgeInsets.only(top: 30.0),
-                          alignment: Alignment.center,
-                          child: AppErrorWidget(
-                            onPressed: () =>
-                                movieCarouselBloc?.add(CarouselLoadEvent()),
-                            errorType: state.errorType,
+                        return Center(
+                          child: Container(
+                            //margin: EdgeInsets.only(top: 50.0),
+                            alignment: Alignment.center,
+                            child: AppErrorWidget(
+                              onPressed: () =>
+                                  movieCarouselBloc?.add(CarouselLoadEvent()),
+                              errorType: state.errorType,
+                            ),
                           ),
                         );
                       }
@@ -211,7 +229,6 @@ class _HomePageState extends State<HomePage>
                   BlocBuilder<MovieCarouselBloc, MovieCarouselState>(
                     builder: (context, state) {
                       if (state is MovieCarouselLoaded) {
-                        //print(state.movies);
                         return MovieCategoryWidget(
                           movies: state.movies,
                           contentTitle: 'Trending',
@@ -223,7 +240,6 @@ class _HomePageState extends State<HomePage>
                   BlocBuilder<MovieCarouselBloc, MovieCarouselState>(
                     builder: (context, state) {
                       if (state is MovieCarouselLoaded) {
-                        //print(state.movies);
                         return MovieCategoryWidget(
                           movies: state.movies,
                           contentTitle: 'Trending',

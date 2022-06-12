@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:wavie/data/core/api_constants.dart';
+import 'package:wavie/common/constants/api_constants.dart';
 import 'package:wavie/common/constants/size_constants.dart';
 import 'package:wavie/domain/entities/movie_entity.dart';
 
@@ -44,7 +44,6 @@ class MovieCategoryWidget extends StatelessWidget {
               },
               itemBuilder: (context, index) {
                 final MovieEntity movie = movies[index];
-                //print('${ApiConstants.BASE_IMAGE_URL}${movie.image_url}');
                 return GestureDetector(
                   onTap: () {
                     Navigator.of(context, rootNavigator: true).push(

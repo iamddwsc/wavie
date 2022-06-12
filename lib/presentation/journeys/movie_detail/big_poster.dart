@@ -6,7 +6,7 @@ import 'package:wavie/presentation/themes/theme_text.dart';
 import 'package:wavie/common/extensions/num_extensions.dart';
 import 'package:wavie/common/extensions/size_extensions.dart';
 
-import '../../../data/core/api_constants.dart';
+import '../../../common/constants/api_constants.dart';
 import '../../../domain/entities/movie_detail_entity.dart';
 import 'movie_detail_app_bar.dart';
 

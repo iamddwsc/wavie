@@ -10,8 +10,8 @@ class CustomPageRoute extends PageRouteBuilder {
   CustomPageRoute(
       {required this.child, required this.direction, this.isAlwaysDown = false})
       : super(
-            transitionDuration: const Duration(milliseconds: 250),
-            reverseTransitionDuration: const Duration(milliseconds: 250),
+            transitionDuration: const Duration(milliseconds: 300),
+            reverseTransitionDuration: const Duration(milliseconds: 300),
             pageBuilder: (context, animation, secondaryAnimation) => child);
 
   @override

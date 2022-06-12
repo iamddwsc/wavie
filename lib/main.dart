@@ -3,9 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:wavie/common/constants/route_constants.dart';
 import 'package:wavie/data/models/movie_detail_model.dart';
 import 'package:wavie/data/models/movie_model.dart';
+import 'package:wavie/data/models/user.dart';
 import 'package:wavie/domain/entities/movie_detail_entity.dart';
+import 'package:wavie/presentation/routes.dart';
+import 'package:wavie/presentation/utils/fade_page_route.dart';
 
 import 'package:wavie/screens/login.dart';
 import 'package:wavie/presentation/themes/app_colors.dart';
@@ -14,14 +18,16 @@ import 'di/get_it.dart' as getIt;
 import 'presentation/themes/theme_text.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   unawaited(getIt.init());
   await Hive.initFlutter();
   Hive.registerAdapter(MovieDetailEntityAdapter());
+  Hive.registerAdapter(UserAdapter());
   await Hive.openBox<MovieDetailEntity>('currentPlaying');
   await Hive.openBox<MovieDetailEntity>('myList');
   await Hive.openBox<bool>('isAlwaysDown');
   await Hive.openBox<String>('timeStamp');
+  await Hive.openBox<User>('myUserBox');
+  WidgetsFlutterBinding.ensureInitialized();
 
   runApp(const MyApp());
 }
@@ -48,7 +54,16 @@ class MyApp extends StatelessWidget {
         //visualDensity: VisualDensity.adaptivePlatformDensity,
         //appBarTheme: const AppBarTheme(elevation: 0),
       ),
-      home: const LoginPage(),
+      // home: const LoginPage(),
+      builder: (context, widget) {
+        return widget!;
+      },
+      initialRoute: RouteList.init,
+      onGenerateRoute: (RouteSettings settings) {
+        final routes = Routes.getRoutes(settings);
+        final WidgetBuilder? builder = routes[settings.name];
+        return FadePageRouteBuilder(child: builder!, settings: settings);
+      },
     );
   }
 }

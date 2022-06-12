@@ -1,16 +1,20 @@
-import 'package:wavie/domain/entities/user_entity.dart';
+import 'package:hive/hive.dart';
+
+part 'user.g.dart';
 
 class UserModelResult {
   bool? success;
   String? token;
   User? user;
+  String? expiresAt;
 
-  UserModelResult({this.success, this.token, this.user});
+  UserModelResult({this.success, this.token, this.user, this.expiresAt});
 
   UserModelResult.fromJson(Map<String, dynamic> json) {
     this.success = json["success"];
     this.token = json["token"];
     this.user = json["user"] == null ? null : User.fromJson(json["user"]);
+    this.expiresAt = json["expires_at"];
   }
 
   Map<String, dynamic> toJson() {
@@ -18,46 +22,49 @@ class UserModelResult {
     data["success"] = this.success;
     data["token"] = this.token;
     if (this.user != null) data["user"] = this.user?.toJson();
+    data["expires_at"] = this.expiresAt;
     return data;
   }
 }
 
-class User extends UserEntity {
+@HiveType(typeId: 3)
+class User {
+  @HiveField(0)
   int? userId;
+  @HiveField(1)
   String? firstName;
+  @HiveField(2)
   String? lastName;
+  @HiveField(3)
   String? photo;
-  String email;
-  String emailVerifiedAt;
-  String createdAt;
-  String updatedAt;
+  @HiveField(4)
+  String? email;
+  @HiveField(5)
+  String? emailVerifiedAt;
+  @HiveField(6)
+  String? createdAt;
+  @HiveField(7)
+  String? updatedAt;
 
   User(
-      {required this.userId,
-      required this.firstName,
-      required this.lastName,
-      required this.photo,
-      this.email = '',
-      this.emailVerifiedAt = '',
-      this.createdAt = '',
-      this.updatedAt = ''})
-      : super(
-            userId: userId,
-            first_name: firstName,
-            last_name: lastName,
-            photo_url: photo);
+      {this.userId,
+      this.firstName,
+      this.lastName,
+      this.photo,
+      this.email,
+      this.emailVerifiedAt,
+      this.createdAt,
+      this.updatedAt});
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      userId: json["userId"],
-      firstName: json["first_name"],
-      lastName: json["last_name"],
-      photo: json["photo"] ?? '',
-      email: json["email"],
-      emailVerifiedAt: json["email_verified_at"] ?? '',
-      createdAt: json["created_at"],
-      updatedAt: json["updated_at"],
-    );
+  User.fromJson(Map<String, dynamic> json) {
+    this.userId = json["userId"];
+    this.firstName = json["first_name"];
+    this.lastName = json["last_name"];
+    this.photo = json["photo"];
+    this.email = json["email"];
+    this.emailVerifiedAt = json["email_verified_at"];
+    this.createdAt = json["created_at"];
+    this.updatedAt = json["updated_at"];
   }
 
   Map<String, dynamic> toJson() {

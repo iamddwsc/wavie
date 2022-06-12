@@ -10,4 +10,4 @@ class AppError extends Equatable {
   List<Object?> get props => [appErrorType];
 }
 
-enum AppErrorType { apiError, networkError, unknownError }
+enum AppErrorType { apiError, networkError, unauthorisedError, unknownError }

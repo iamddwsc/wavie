@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:wavie/di/get_it.dart';
+import 'package:wavie/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:wavie/presentation/tab_navigator.dart';
 import 'package:wavie/presentation/themes/app_colors.dart';
 import '../common/appcolors.dart' as appcolors;
@@ -48,7 +50,8 @@ class _WavieAppState extends State<WavieApp>
   @override
   void dispose() {
     // TODO: implement dispose
-    Hive.close();
+    //print('Hive close');
+    //Hive.close();
     super.dispose();
   }
 
@@ -80,52 +83,6 @@ class _WavieAppState extends State<WavieApp>
                     _buildOffstageNavigator("Page2"),
                     _buildOffstageNavigator("Page3"),
                     _buildOffstageNavigator("Page4"),
-                    //_buildOffstageNavigator("Page5"),
-                    // Positioned(
-                    //     left: 20.0,
-                    //     top: 10.0,
-                    //     child: Image.asset(
-                    //       'assets/images/logo_w.png',
-                    //       fit: BoxFit.fitHeight,
-                    //       height: 32.0,
-                    //       isAntiAlias: true,
-                    //     )),
-                    // Positioned(
-                    //   right: 20.0,
-                    //   top: 5.0,
-                    //   child: Container(
-                    //     margin: EdgeInsets.all(5.0),
-                    //     child: CircleAvatar(
-                    //       radius: 20.0,
-                    //       child: Icon(Icons.person),
-                    //       //maxRadius: 25.0,
-                    //     ),
-                    //   ),
-                    // ),
-                    // Positioned(
-                    //   top: 70.0,
-                    //   width: MediaQuery.of(context).size.width,
-                    //   child: Container(
-                    //     padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                    //     child: Row(
-                    //       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    //       children: [
-                    //         Container(
-                    //           child: Text('TV Shows',
-                    //               style: TextStyle(color: appcolors.white)),
-                    //         ),
-                    //         Container(
-                    //           child: Text('Movies',
-                    //               style: TextStyle(color: appcolors.white)),
-                    //         ),
-                    //         Container(
-                    //           child: Text('Categories',
-                    //               style: TextStyle(color: appcolors.white)),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ),
-                    // )
                   ],
                 ),
               ),

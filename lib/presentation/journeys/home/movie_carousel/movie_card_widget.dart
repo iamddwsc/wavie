@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:wavie/data/core/api_constants.dart';
+import 'package:wavie/common/constants/api_constants.dart';
 import 'package:wavie/common/constants/size_constants.dart';
 import 'package:wavie/presentation/journeys/movie_detail/movie_detail_arguments.dart';
 import 'package:wavie/presentation/journeys/movie_detail/movie_detail_widget.dart';

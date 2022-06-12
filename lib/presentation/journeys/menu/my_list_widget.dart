@@ -4,7 +4,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:wavie/common/extensions/size_extensions.dart';
-import 'package:wavie/data/core/api_constants.dart';
+import 'package:wavie/common/constants/api_constants.dart';
 import 'package:wavie/data/models/boxes.dart';
 import 'package:wavie/presentation/journeys/menu/my_list_app_bar.dart';
 import 'package:wavie/presentation/journeys/movie_detail/movie_detail_arguments.dart';
@@ -15,14 +15,14 @@ import '../../../common/screenutil/screenutil.dart';
 import '../../../domain/entities/movie_detail_entity.dart';
 import '../../utils/custom_page_route.dart';
 
-class MyList extends StatefulWidget {
-  const MyList({Key? key}) : super(key: key);
+class MyListWidget extends StatefulWidget {
+  const MyListWidget({Key? key}) : super(key: key);
 
   @override
-  State<MyList> createState() => _MyListState();
+  State<MyListWidget> createState() => _MyListWidgetState();
 }
 
-class _MyListState extends State<MyList> {
+class _MyListWidgetState extends State<MyListWidget> {
   @override
   void initState() {
     // TODO: implement initState

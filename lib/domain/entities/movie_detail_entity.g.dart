@@ -19,15 +19,15 @@ class MovieDetailEntityAdapter extends TypeAdapter<MovieDetailEntity> {
     return MovieDetailEntity(
       movieId: fields[0] as int,
       title: fields[1] as String,
-      description: fields[3] as String,
-      year: fields[4] as int,
-      genres: (fields[5] as List?)?.cast<String>(),
-      director: (fields[6] as List?)?.cast<String>(),
-      cast: (fields[7] as List?)?.cast<String>(),
-      rating: fields[8] as String,
-      duration: fields[9] as String,
-      imageUrl: fields[10] as String,
-      videoUrl: fields[11] as String,
+      description: fields[2] as String,
+      year: fields[3] as int,
+      genres: (fields[4] as List?)?.cast<String>(),
+      director: (fields[5] as List?)?.cast<String>(),
+      cast: (fields[6] as List?)?.cast<String>(),
+      rating: fields[7] as String,
+      duration: fields[8] as String,
+      imageUrl: fields[9] as String,
+      videoUrl: fields[10] as String,
     );
   }
 
@@ -39,23 +39,23 @@ class MovieDetailEntityAdapter extends TypeAdapter<MovieDetailEntity> {
       ..write(obj.movieId)
       ..writeByte(1)
       ..write(obj.title)
-      ..writeByte(3)
+      ..writeByte(2)
       ..write(obj.description)
-      ..writeByte(4)
+      ..writeByte(3)
       ..write(obj.year)
-      ..writeByte(5)
+      ..writeByte(4)
       ..write(obj.genres)
-      ..writeByte(6)
+      ..writeByte(5)
       ..write(obj.director)
-      ..writeByte(7)
+      ..writeByte(6)
       ..write(obj.cast)
-      ..writeByte(8)
+      ..writeByte(7)
       ..write(obj.rating)
-      ..writeByte(9)
+      ..writeByte(8)
       ..write(obj.duration)
-      ..writeByte(10)
+      ..writeByte(9)
       ..write(obj.imageUrl)
-      ..writeByte(11)
+      ..writeByte(10)
       ..write(obj.videoUrl);
   }
 

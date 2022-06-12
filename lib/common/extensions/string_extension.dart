@@ -7,6 +7,10 @@ extension StringExtension on String {
     return this.length > 10 ? '${this.substring(0, 10)}' : this;
   }
 
+  String intelliTrimWithDot() {
+    return this.length > 70 ? '${this.substring(0, 70)}...' : this;
+  }
+
   // String t(BuildContext context) {
   //   return AppLocalizations.of(context)?.translate(this) ?? '';
   // }
