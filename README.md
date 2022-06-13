@@ -1,6 +1,6 @@
 # wavie
 
-Project of the 8th semester.
+Project of the 8th semester about multi platform mobile app - topic movie app
 
 ## Getting Started
 
