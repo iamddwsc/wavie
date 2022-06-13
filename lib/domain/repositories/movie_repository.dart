@@ -9,4 +9,5 @@ abstract class MovieRepository {
   Future<List<MovieEntity>> getPopular();
   Future<MovieDetailEntity> getMovieDetail(int id);
   Future<List<MovieModel>> getSearchedMovie(String query);
+  Future<List<MovieEntity>> getMovieToday();
 }

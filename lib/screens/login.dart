@@ -97,12 +97,15 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.black,
                       child: Row(
                         children: [
-                          IconButton(
-                              onPressed: () => {},
-                              icon: Icon(
-                                Icons.navigate_before,
-                                color: Colors.white,
-                              )),
+                          // IconButton(
+                          //     onPressed: () => {},
+                          //     icon: Icon(
+                          //       Icons.navigate_before,
+                          //       color: Colors.white,
+                          //     )),
+                          SizedBox(
+                            width: 40.0,
+                          ),
                           Expanded(
                             child: Container(
                               width: 32.0,

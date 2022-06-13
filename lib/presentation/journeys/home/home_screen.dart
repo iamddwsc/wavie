@@ -7,6 +7,7 @@ import 'package:wavie/common/constants/route_constants.dart';
 import 'package:wavie/common/extensions/size_extensions.dart';
 import 'package:wavie/di/get_it.dart';
 import 'package:wavie/presentation/blocs/movie_carousel/movie_carousel_bloc.dart';
+import 'package:wavie/presentation/blocs/movie_today/movie_today_bloc.dart';
 import 'package:wavie/presentation/journeys/home/custom_appbar/custom_home_appbar.dart';
 import 'package:wavie/presentation/widgets/app_error_widget.dart';
 import 'package:wavie/presentation/journeys/home/movie_carousel/movie_carousel_header.dart';
@@ -31,6 +32,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   MovieCarouselBloc? movieCarouselBloc;
+  MovieTodayBloc? movieTodayBloc;
   bool _visible = true;
   late final AnimationController _controller;
   late ScrollController _scrollController;
@@ -41,7 +43,10 @@ class _HomePageState extends State<HomePage>
     // TODO: implement initState
     super.initState();
     movieCarouselBloc = getItInstance<MovieCarouselBloc>();
+    movieTodayBloc = getItInstance<MovieTodayBloc>();
     movieCarouselBloc?.add(CarouselLoadEvent());
+    movieTodayBloc?.add(MovieTodayLoadEvent());
+    // movieCarouselBloc?.add(getMovieTodayEvent());
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 450),
@@ -62,6 +67,8 @@ class _HomePageState extends State<HomePage>
     _scrollController.dispose();
   }
 
+  // Future<List<>>
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -69,6 +76,9 @@ class _HomePageState extends State<HomePage>
     var myUser = Boxes.getMyUser().get('myUser')!;
     return Scaffold(
         extendBodyBehindAppBar: true,
+        //resizeToAvoidBottomInset: false,
+        //resizeToAvoidBottomPadding: false,
+
         appBar: CustomHomeAppBar(
           controller: _controller,
           visible: _visible,
@@ -195,6 +205,8 @@ class _HomePageState extends State<HomePage>
               providers: [
                 BlocProvider<MovieCarouselBloc>(
                     create: (context) => movieCarouselBloc!),
+                BlocProvider<MovieTodayBloc>(
+                    create: (context) => movieTodayBloc!),
               ],
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -241,12 +253,12 @@ class _HomePageState extends State<HomePage>
                       return SizedBox();
                     },
                   ),
-                  BlocBuilder<MovieCarouselBloc, MovieCarouselState>(
+                  BlocBuilder<MovieTodayBloc, MovieTodayState>(
                     builder: (context, state) {
-                      if (state is MovieCarouselLoaded) {
+                      if (state is MovieTodayLoaded) {
                         return MovieCategoryWidget(
                           movies: state.movies,
-                          contentTitle: 'Trending',
+                          contentTitle: 'Movie Today',
                         );
                       }
                       return SizedBox();
@@ -257,25 +269,38 @@ class _HomePageState extends State<HomePage>
                       if (state is MovieCarouselLoaded) {
                         //print(state.movies);
                         return MovieCategoryWidget(
-                          movies: state.movies,
-                          contentTitle: 'Trending',
+                          movies: state.movies.reversed.toList(),
+                          contentTitle: 'Popular',
                         );
                       }
                       return SizedBox();
                     },
                   ),
-                  BlocBuilder<MovieCarouselBloc, MovieCarouselState>(
+                  BlocBuilder<MovieTodayBloc, MovieTodayState>(
                     builder: (context, state) {
-                      if (state is MovieCarouselLoaded) {
-                        //print(state.movies);
+                      if (state is MovieTodayLoaded) {
                         return MovieCategoryWidget(
-                          movies: state.movies,
-                          contentTitle: 'Trending',
+                          movies: state.movies.reversed.toList(),
+                          contentTitle: 'For You',
                         );
                       }
                       return SizedBox();
                     },
                   ),
+                  // FutureBuilder(
+                  //   future:
+                  //   ,builder: (context, snapshot) {
+                  //   if (snapshot.connectionState == ConnectionState.done) {
+                  //     return MovieCategoryWidget(
+                  //       movies: snapshot.data,
+                  //       contentTitle: 'Trending',
+                  //     );
+                  //   }
+                  //   return SizedBox();
+                  // }),
+                  SizedBox(
+                    height: 80.0,
+                  )
                 ],
               ),
             ),

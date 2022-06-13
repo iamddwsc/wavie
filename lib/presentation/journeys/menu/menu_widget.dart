@@ -58,6 +58,7 @@ class MenuWidget extends StatelessWidget {
                       } else {
                         box.put('isAlwaysDownKey', false);
                       }
+                      FocusManager.instance.primaryFocus?.unfocus();
                       Navigator.of(context).pop();
                     }),
                     child: ClipRRect(

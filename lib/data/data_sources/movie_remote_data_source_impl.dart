@@ -98,4 +98,21 @@ class MovieRemoteDataSourceImpl extends MovieRemoteDataSource {
       rethrow;
     }
   }
+
+  @override
+  Future<List<MovieModel>> getMovieToday() async {
+    // TODO: implement getMovieToday
+    try {
+      final response = await _client.get(
+        // 1
+        Uri.parse(ApiConstants.BASE_URL + ApiConstants.GET_MOVIE_TODAY),
+      );
+      final movies = MovieResultModel.fromJson(response).movies;
+      // 6
+      return movies!;
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
 }

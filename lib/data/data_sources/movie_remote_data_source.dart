@@ -14,4 +14,6 @@ abstract class MovieRemoteDataSource {
   Future<MovieDetailEntity> getMovieDetail(int movieId);
 
   Future<List<MovieModel>> getSearchedMovie(String query);
+
+  Future<List<MovieModel>> getMovieToday();
 }

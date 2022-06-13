@@ -8,6 +8,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:wavie/common/constants/api_constants.dart';
 import 'package:wavie/common/constants/size_constants.dart';
 import 'package:wavie/common/screenutil/screenutil.dart';
+import 'package:wavie/data/models/boxes.dart';
 import 'package:wavie/data/models/comment_model.dart';
 import 'package:wavie/presentation/journeys/movie_detail/comment_option_panel.dart';
 
@@ -67,11 +68,34 @@ class _CommentWidgetState extends State<CommentWidget> {
     }
   }
 
+  Future<List<CommentModel>> _deleteComment(
+      int comment_id, String token) async {
+    final response = await _client.post(
+      Uri.parse(ApiConstants.BASE_URL + ApiConstants.DELETE_COMMENT),
+      body: jsonEncode({'comment_id': comment_id.toString()}),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    final String jsonBody = response.body;
+    final int statusCode = response.statusCode;
+    if (statusCode != 200 || jsonBody == null) {
+      print(response.reasonPhrase);
+      throw new Exception("Lỗi load api");
+    } else {
+      final comments =
+          CommentModelResult.fromJson(json.decode(response.body)).comments;
+      return comments!;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var myUserBox = Hive.box<User>('myUserBox');
     var myUser = myUserBox.get('myUser');
+    var myToken = Boxes.getMyToken();
     return ValueListenableBuilder(
       valueListenable: list_comments,
       builder: (context, List<CommentModel> value, _) {
@@ -144,19 +168,25 @@ class _CommentWidgetState extends State<CommentWidget> {
                       ),
                     ),
                     if (myUser!.userId == value[index].user!.userId)
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.more_horiz_rounded,
-                            color: Colors.white,
+                      GestureDetector(
+                        onTap: () {
+                          _deleteComment(
+                              value[index].commentId!, myToken.get('token')!);
+                        },
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                //list_comments.value.removeAt(index);
+                                //_panelController.open();
+                              });
+                            },
                           ),
-                          onPressed: () {
-                            setState(() {
-                              //list_comments.value.removeAt(index);
-                              //_panelController.open();
-                            });
-                          },
                         ),
                       )
                   ],

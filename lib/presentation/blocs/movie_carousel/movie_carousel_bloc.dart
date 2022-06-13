@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:wavie/domain/entities/app_error.dart';
 import 'package:wavie/domain/entities/movie_entity.dart';
 import 'package:wavie/domain/entities/no_params.dart';
+import 'package:wavie/domain/usecases/get_movie_today.dart';
 import 'package:wavie/domain/usecases/get_trending.dart';
 
 part 'movie_carousel_event.dart';
@@ -13,7 +14,7 @@ class MovieCarouselBloc extends Bloc<MovieCarouselEvent, MovieCarouselState> {
 
   MovieCarouselBloc({required this.getTrending})
       : super(MovieCarouselInitial()) {
-    on<CarouselLoadEvent>((event, emit) async {
+    on<MovieCarouselEvent>((event, emit) async {
       // TODO: implement event handler
       try {
         if (event is CarouselLoadEvent) {
@@ -22,7 +23,7 @@ class MovieCarouselBloc extends Bloc<MovieCarouselEvent, MovieCarouselState> {
               movies: movies, defaultIndex: event.defaultIndex));
         }
       } catch (e) {
-        //print(e);
+        print(e);
         emit(MovieCarouselError(e as AppErrorType));
         //emit(MovieCarouselError(AppErrorType.apiError));
       }

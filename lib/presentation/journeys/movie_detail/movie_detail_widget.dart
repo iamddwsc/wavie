@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:animate_icons/animate_icons.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:http/http.dart';
 import 'package:video_player/video_player.dart';
 import 'package:wavie/common/constants/size_constants.dart';
 import 'package:wavie/common/extensions/size_extensions.dart';
@@ -22,6 +24,7 @@ import '../../../common/extensions/string_extension.dart';
 
 import '../../../common/screenutil/screenutil.dart';
 import '../../../common/constants/api_constants.dart';
+import '../../../data/models/comment_model.dart';
 import '../../utils/custom_page_route.dart';
 import 'big_poster.dart';
 import 'movie_trailer_widget.dart';
@@ -48,6 +51,8 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   late VideoPlayerController videoPlayerController;
   late ChewieController chewieController;
   AnimateIconController? animateIconController;
+  final Client _client = Client();
+  late TextEditingController commentController;
 
   final boxMyList = Boxes.getMyList();
   final boxTimeStamp = Boxes.getTimeStamp();
@@ -67,6 +72,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       isInMyList = true;
       isInMyListChanged = true;
     }
+    commentController = TextEditingController();
     initializePlayer();
   }
 
@@ -77,6 +83,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       videoPlayerController.dispose();
       chewieController.dispose();
     }
+    commentController.dispose();
     // videoPlayerController.dispose();
     // if (chewieController != null) {
 
@@ -145,9 +152,34 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     await initializePlayer();
   }
 
+  Future<void> _createComment(int movieId, String comment, String token) async {
+    final response = await _client.post(
+      Uri.parse(ApiConstants.BASE_URL + ApiConstants.CREATE_COMMENT),
+      body: jsonEncode({'movieId': movieId.toString(), 'comment': comment}),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    //print(Uri.parse(ApiConstants.BASE_URL + ApiConstants.CREATE_COMMENT));
+    final String jsonBody = response.body;
+    //print(jsonBody);
+    final int statusCode = response.statusCode;
+    if (statusCode != 200 || jsonBody == null) {
+      print(response.reasonPhrase);
+      throw new Exception("Lỗi load api");
+    } else {
+      final comments = json.decode(response.body);
+      print(comments);
+      //return comments!['result'];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
+    var myUser = Boxes.getMyUser().get('myUser');
+    var myToken = Boxes.getMyToken().get('token');
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
@@ -471,10 +503,10 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                             //       .runtimeType);
                             // }),
                             ActionButton('assets/icons/send.png', 'Send', () {
-                              var z = Hive.box('authenticationBox');
-                              print(z.get('token'));
-                              var y = Hive.box<User>('myUserBox');
-                              print(y.get('myUser')!.firstName);
+                              // var z = Hive.box('authenticationBox');
+                              // print(z.get('token'));
+                              // var y = Hive.box<User>('myUserBox');
+                              // print(y.get('myUser')!.firstName);
                             }),
                           ],
                         ),
@@ -500,12 +532,17 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                       Row(
                         children: [
                           Expanded(
-                              child: _buildTextField(context, '', 'value')),
+                              child: _buildTextField(context, '', 'value',
+                                  controller: commentController)),
                           Container(
                             height: 40.0,
                             child: FloatingActionButton(
                                 onPressed: () {
-                                  print('ABC Comment');
+                                  print(commentController.text);
+                                  _createComment(
+                                      widget.movieDetailArguments.movieId,
+                                      commentController.text,
+                                      myToken!);
                                 },
                                 child: Icon(Icons.send)),
                           ),

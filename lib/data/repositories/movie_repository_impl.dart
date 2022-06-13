@@ -81,4 +81,20 @@ class MovieRepositoryImpl extends MovieRepository {
       return Future.error(AppErrorType.networkError);
     }
   }
+
+  @override
+  Future<List<MovieEntity>> getMovieToday() async {
+    // TODO: implement getMovieToday
+    try {
+      final movies = await remoteDataSource.getMovieToday();
+      //(movies);
+      return movies;
+    } on SocketException {
+      //print('socket2');
+      return Future.error(AppErrorType.networkError);
+    } on Exception {
+      //print('api');
+      return Future.error(AppErrorType.apiError);
+    }
+  }
 }

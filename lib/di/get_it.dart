@@ -7,6 +7,7 @@ import 'package:wavie/data/data_sources/movie_remote_data_source_impl.dart';
 import 'package:wavie/data/repositories/movie_repository_impl.dart';
 import 'package:wavie/domain/repositories/movie_repository.dart';
 import 'package:wavie/domain/usecases/get_movie_detail.dart';
+import 'package:wavie/domain/usecases/get_movie_today.dart';
 import 'package:wavie/domain/usecases/get_trending.dart';
 import 'package:wavie/domain/usecases/search_movies.dart';
 import 'package:wavie/domain/usecases/sign_out.dart';
@@ -14,6 +15,7 @@ import 'package:wavie/domain/usecases/update_user.dart';
 import 'package:wavie/presentation/blocs/authentication/authentication_bloc.dart';
 import 'package:wavie/presentation/blocs/movie_carousel/movie_carousel_bloc.dart';
 import 'package:wavie/presentation/blocs/movie_detail/movie_detail_bloc.dart';
+import 'package:wavie/presentation/blocs/movie_today/movie_today_bloc.dart';
 
 import '../data/data_sources/authentication_local_data_source.dart';
 import '../data/repositories/authentication_repository_impl.dart';
@@ -54,6 +56,8 @@ Future init() async {
       .registerLazySingleton<SignOutUser>(() => SignOutUser(getItInstance()));
   getItInstance
       .registerLazySingleton<UpdateUser>(() => UpdateUser(getItInstance()));
+  getItInstance.registerLazySingleton<GetMovieToday>(
+      () => GetMovieToday(getItInstance()));
   //  getItInstance
   //     .registerLazySingleton<>(() => LogoutUser(getItInstance()));
 
@@ -63,6 +67,8 @@ Future init() async {
       updateUser: getItInstance()));
   getItInstance
       .registerFactory(() => MovieCarouselBloc(getTrending: getItInstance()));
+  getItInstance
+      .registerFactory(() => MovieTodayBloc(getMovieToday: getItInstance()));
   getItInstance
       .registerFactory(() => MovieDetailBloc(getMovieDetail: getItInstance()));
   getItInstance
