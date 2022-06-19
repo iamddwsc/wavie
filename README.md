@@ -1,7 +1,7 @@
 # wavie
 
 Project of the 8th semester about multi platform mobile app - topic movie app </br>
-![Home Screen](homescreen.png) </br>
+![Home Screen](homescreen.png) &nbsp; &nbsp; &nbsp;
 ![Movie Detail Screen](movie_detail.png) </br>
 
 ## Getting Started
